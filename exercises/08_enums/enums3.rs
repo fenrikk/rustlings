@@ -44,13 +44,56 @@ impl State {
     }
 
     fn process(&mut self, message: Message) {
-        // TODO: Create a match expression to process the different message
-        // variants using the methods defined above.
+        match message {
+            Message::Resize { width, height } => self.resize(width, height),
+            Message::Move(point) => self.move_position(point),
+            Message::Echo(s) => self.echo(s),
+            Message::ChangeColor(red, green, blue) => self.change_color(red, green, blue),
+            Message::Quit => self.quit(),
+        }
     }
 }
 
 fn main() {
-    // You can optionally experiment here.
+    let mut state = State {
+        width: 100,
+        height: 100,
+        position: Point { x: 0, y: 0 },
+        message: String::from("Initial message"),
+        color: (0, 0, 0),
+        quit: false,
+    };
+
+    println!("Initial state:");
+    println!("Size: {}x{}", state.width, state.height);
+    println!("Position: ({}, {})", state.position.x, state.position.y);
+    println!("Message: {}", state.message);
+    println!("Color: {:?}", state.color);
+    println!("Quit: {}", state.quit);
+    println!("\n---Processing messages---\n");
+
+    // Resize window
+    state.process(Message::Resize {
+        width: 800,
+        height: 600,
+    });
+    println!("After resize: {}x{}", state.width, state.height);
+
+    // Move window
+    state.process(Message::Move(Point { x: 10, y: 20 }));
+    println!("After move: position ({}, {})", state.position.x, state.position.y);
+
+    // Change message
+    state.process(Message::Echo(String::from("Hello, Rust!")));
+    println!("After echo: message is \"{}\"", state.message);
+
+    // Change color to purple
+    state.process(Message::ChangeColor(255, 0, 255));
+    println!("After color change: RGB color is {:?}", state.color);
+
+    // Quit
+    state.process(Message::Quit);
+    println!("After quit: quit state is {}", state.quit);
 }
 
 #[cfg(test)]
