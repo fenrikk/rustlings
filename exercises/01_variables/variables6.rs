@@ -1,6 +1,6 @@
-// TODO: Change the line below to fix the compiler error.
-const NUMBER = 3;
-
 fn main() {
-    println!("Number: {NUMBER}");
+    let number: i32 = 3;
+    println!("Spell a number: {}", number);
+
+    println!("Number plus two is: {}", number + 2);
 }
